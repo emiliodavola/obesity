@@ -1,0 +1,11 @@
+data:
+  path: "data/obesity_dataset.csv"
+  target_col: "obese"
+  cat_cols: ["RACE", "ETHNICITY"]
+model:
+  ckpt: "checkpoints/tabpfn-v3-classifier-v3_20260417_binary.ckpt"
+  hf_repo: "Prior-Labs/tabpfn_3"
+  hf_filename: "tabpfn-v3-classifier-v3_20260417_binary.ckpt"
+params:
+  test_size: 0.33
+  random_state: 42
