@@ -1,4 +1,5 @@
 import logging
+from typing import Any, Dict, cast
 import hydra
 from omegaconf import DictConfig, OmegaConf
 from src.engine import run_experiment
@@ -15,8 +16,8 @@ def main(cfg: DictConfig):
         )
 
         # Convertimos la configuración de OmegaConf a tipos nativos de Python
-        # para evitar incompatibilidades con sklearn y tabpfn
-        config_dict = OmegaConf.to_container(cfg, resolve=True)
+        # y casteamos para que mypy no se queje del indexado
+        config_dict = cast(Dict[str, Any], OmegaConf.to_container(cfg, resolve=True))
 
         roc, acc = run_experiment(
             csv_path=config_dict["data"]["path"],
