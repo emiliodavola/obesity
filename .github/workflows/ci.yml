@@ -1,6 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   test:
@@ -15,5 +23,5 @@ jobs:
 
       - run: uv run ruff check .
       - run: uv run ruff format --check .
-      - run: uv run pytest
-      - run: uv run mypy .
+      - run: PYTHONPATH=. uv run pytest
+      - run: PYTHONPATH=. uv run mypy .
