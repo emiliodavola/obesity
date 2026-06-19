@@ -1,27 +1,56 @@
-import warnings
+"""
+Core engine for the obesity classification pipeline.
+
+Includes model management and execution.
+"""
+
 import os
 import shutil
+import warnings
+
 import pandas as pd
 import torch
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, accuracy_score
-from sklearn.preprocessing import OrdinalEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from tabpfn import TabPFNClassifier
 from huggingface_hub import hf_hub_download
+from sklearn.compose import ColumnTransformer
+from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OrdinalEncoder
+from tabpfn import TabPFNClassifier
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def get_device():
+    """Return the available computation device (CUDA or CPU).
+
+    Returns
+    -------
+    str
+        The device identifier.
+    """
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
     return device
 
 
 def ensure_model_checkpoint(local_path, hf_repo, hf_filename):
-    """Checks if model exists locally, otherwise downloads from Hugging Face."""
+    """Verify if model exists locally, otherwise downloads from Hugging Face.
+
+    Parameters
+    ----------
+    local_path : str
+        The target directory for the model file.
+    hf_repo : str
+        Hugging Face repository ID.
+    hf_filename : str
+        The specific filename to download.
+
+    Returns
+    -------
+    str
+        The path to the model checkpoint.
+    """
     if os.path.exists(local_path):
         return local_path
 
@@ -39,6 +68,22 @@ def ensure_model_checkpoint(local_path, hf_repo, hf_filename):
 
 
 def create_obesity_pipeline(model_path, device, cat_cols):
+    """Construct a Scikit-learn pipeline for obesity classification.
+
+    Parameters
+    ----------
+    model_path : str
+        Path to the loaded TabPFN model.
+    device : str
+        The device to use for inference (e.g., 'cuda').
+    cat_cols : list[str]
+        List of columns to be encoded via OrdinalEncoder.
+
+    Returns
+    -------
+    sklearn.pipeline.Pipeline
+        The assembled preprocessing and classification pipeline.
+    """
     preprocessor = ColumnTransformer(
         transformers=[("cat", OrdinalEncoder(), cat_cols)], remainder="passthrough"
     )
@@ -56,6 +101,32 @@ def run_experiment(
     test_size=0.33,
     random_state=42,
 ):
+    """Execute the classification experiment from raw data to final metrics.
+
+    Parameters
+    ----------
+    csv_path : str
+        Path to the raw dataset CSV.
+    target_col : str
+        The name of the target variable to predict.
+    cat_cols : list[str]
+        Names of categorical columns for preprocessing.
+    model_ckpt : str
+        Target path for the model checkpoint.
+    hf_repo : str
+        Hugging Face repository ID.
+    hf_filename : str
+        The specific filename to download.
+    test_size : float, default=0.33
+        Proportion of data held out for testing.
+    random_state : int, default=42
+        Random seed for reproducible splitting.
+
+    Returns
+    -------
+    tuple[float, float]
+        A tuple containing (ROC AUC, Accuracy).
+    """
     device = get_device()
 
     model_path = ensure_model_checkpoint(model_ckpt, hf_repo, hf_filename)
