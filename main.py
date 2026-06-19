@@ -1,8 +1,12 @@
+"""Orchestrates the obesity classification pipeline using Hydra configuration."""
+
 import logging
-from typing import Any, Dict, cast
+from typing import Any, cast
+
 import hydra
 from omegaconf import DictConfig, OmegaConf
-from src.engine import run_experiment
+
+from src.obesity.engine import run_experiment
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger("ObesityHydraPipeline")
@@ -10,14 +14,20 @@ logger = logging.getLogger("ObesityHydraPipeline")
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(cfg: DictConfig):
-    try:
-        logger.info(
-            "\n=== Iniciando Pipeline con Hydra (Full Config + Auto Download) ==="
-        )
+    """Execute the obesity classification pipeline from configuration.
 
-        # Convertimos la configuración de OmegaConf a tipos nativos de Python
-        # y casteamos para que mypy no se queje del indexado
-        config_dict = cast(Dict[str, Any], OmegaConf.to_container(cfg, resolve=True))
+    Parameters
+    ----------
+    cfg : DictConfig
+        Hydra configuration object containing data and model parameters.
+
+    Returns
+    -------
+    tuple[float, float]
+        The ROC AUC and Accuracy of the experiment.
+    """
+    try:
+        config_dict = cast(dict[str, Any], OmegaConf.to_container(cfg, resolve=True))
 
         roc, acc = run_experiment(
             csv_path=config_dict["data"]["path"],
@@ -30,11 +40,9 @@ def main(cfg: DictConfig):
             random_state=config_dict["params"]["random_state"],
         )
 
-        logger.info(
-            f"\nProceso completado con éxito -> ROC AUC: {roc:.4f}, Accuracy: {acc:.4f}"
-        )
+        logger.info(f"ROC AUC: {roc:.4f}, Accuracy: {acc:.4f}")
     except Exception as e:
-        logger.error(f"\nError en la ejecución del pipeline: {e}", exc_info=True)
+        logger.error(f"Pipeline execution failed: {e}", exc_info=True)
 
 
 if __name__ == "__main__":
