@@ -15,3 +15,12 @@ logs/
 outputs/*
 !outputs/.gitkeep
 mypy_cache/
+skills-lock.json
+.agents/
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+# pixi environments
+.pixi/*
+!.pixi/config.toml
