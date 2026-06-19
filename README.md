@@ -1,6 +1,6 @@
 # Obesity Classification Pipeline
 
-An end-to-end machine learning pipeline for obesity classification leveraging the TabPFN (Tabular Prior-Data Fitted Network) model. 
+An end-to-end machine learning pipeline for obesity classification leveraging the TabPFN (Tabular Prior-Data Fitted Network) model.
 
 ## Overview
 
@@ -28,22 +28,22 @@ This project implements a modular pipeline to predict obesity levels based on ta
 
 ### Prerequisites
 
-Ensure you have [uv](https://github.com/astral-sh/uv) installed.
+Ensure you have [pixi](https://pixi.sh) installed.
 
 ### Setup
 
 ```bash
-uv sync
+pixi install
 ```
 
 ### Running the Pipeline
 
 ```bash
-uv run main.py
+pixi run python main.py
 ```
 
 To override configuration parameters via CLI:
 
 ```bash
-uv run main.py params.test_size=0.2 data.path=data/my_dataset.csv
+pixi run python main.py params.test_size=0.2 data.path=data/my_dataset.csv
 ```
