@@ -31,7 +31,19 @@ pytest = "*"
 ruff = "*"
 
 [feature.dev.activation.env]
-PYTHONPATH = "./src"
+PYTHONPATH = "."
+
+[feature.agent.dependencies]
+ipython = "*"
+pyright = "*"
+skrub = "*"
+
+[feature.agent.activation.env]
+PYTHONPATH = "."
+
+[feature.agent.pypi-dependencies]
+skore = ">=0.21"
 
 [environments]
 dev = { features = ["dev"], solve-group = "default" }
+agent = { features = ["dev", "agent"], solve-group = "default" }

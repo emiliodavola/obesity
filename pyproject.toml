@@ -1,0 +1,9 @@
+[project]
+name = "obesity"
+version = "0.1.0"
+description = "Obesity Classification Pipeline"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.setuptools]
+packages = [{include = "obesity"}]

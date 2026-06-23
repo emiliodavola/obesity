@@ -15,11 +15,13 @@ This project implements a modular pipeline to predict obesity levels based on ta
 
 ## Project Structure
 
-- `main.py`: The entry point of the application; orchestrates the experiment via Hydra.
-- `src/engine.py`: Contains the core logic:
-  - Data loading and splitting.
-  - Preprocessing pipeline construction.
-  - Model instantiation and evaluation.
+- `main.py`: The entry point; orchestrates the experiment via Hydra.
+- `obesity/`: Core logic modules:
+  - `data.py`: Data loading and splitting.
+  - `features.py`: Preprocessing and transformations.
+  - `pipeline.py`: The classifier assembly (Skrub DataOps).
+  - `evaluate.py`: Scoring and metrics.
+  - `utils.py`: Low-level utilities (device, model management).
 
 - `conf/config.yaml`: Configuration file for dataset paths, target columns, and model parameters.
 - `data/`: Directory containing the obesity dataset.
