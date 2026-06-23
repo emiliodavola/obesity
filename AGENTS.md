@@ -1,4 +1,4 @@
-# PROJECT KNOWLEDGE BASE
+# Project KNOWLEDGE BASE
 
 **Generated:** 2026-06-18
 
@@ -9,13 +9,21 @@ Stack: **Python 3.12**, **pixi** (Environment/Package Manager), **Hydra** (Confi
 
 ## STRUCTURE
 
-* `main.py`: Orchestration and entry point (Hydra-driven).
-* `obesity/`: Core logic and data processing.
-* `conf/`: YAML configuration files for experiment parameters.
-* `data/`: Raw dataset files.
-* `tests/`: Unit tests for core functions.
-* `checkpoints/`: Intended storage for downloaded model weights.
-* `outputs/`: Intended storage for experiment results.
+* `main.py`: The orchestration entry point (Hydra-driven).
+* `obesity/`: Core logic modules (Skrub DataOps):
+  - `data.py`: Data loading and splitting.
+  - `features.py`: Feature engineering and transformations.
+  - `pipeline.py`: The classifier assembly (Skrub DataOps graph).
+  - `evaluate.py`: Scoring and metric evaluation.
+  - `utils.py`: Low-level utilities (device management, model retrieval).
+
+* `conf/`: Configuration management (Hydra).
+* `data/`: Dataset files.
+* `tests/`: Structural and smoke tests (`tests/smoke/`).
+* `audit/`: Experiment audit digests (Markdown-based summaries).
+* `experiments/`: Individual experiment scripts (`# %%` jupytext format).
+* `journal/`: The project's chronological record (`JOURNAL.md`).
+* `openspec/`: The SDD artifacts (Proposals, Specs, Designs, Tasks, and Reports).
 
 ## COMMANDS
 
@@ -38,18 +46,12 @@ To ensure reproducibility and minimize repository bloat, the following rules app
 
 * **Versioned (The Truths):**
     - `obesity/`, `main.py`, `tests/`, `conf/`, `journal/`, `openspec/`, `experiments/`, `pixi.toml`, and `pixi.lock`.
+    - `data/obesity_dataset.csv`
 * **Not Versioned (The Noise):**
-    - `data/` (Raw datasets), `checkpoints/` (Model weights), `outputs/` (Results/Logs), and `scratch/` (Ephemeral probes).
-* **Rule of Thumb:** If it's a binary, a large file, or a transient execution trace, it stays in the local environment, not in Git.
+    - `checkpoints/`, `outputs/`, `scratch/`, `*.ckpt`, `*.log`, `*.h5`, `*.pt`, `*.pth`, `*.db`, `*.val`
 
 ## WHERE TO LOOK
 
 * **Source**: `obesity/`
-* **Tests**: `tests/`
-* **Docs/Config**: `conf/config.yaml`
-
-## NOTES
-
-* **Hydra Integration**: Most hyperparameters and data paths are managed via `conf/config.yaml`. You can override parameters directly via CLI (e.g., `pixi run python main.py data.target_col=label`).
-* **Model Lifecycle**: Handled by `obesity/utils.py` and orchestrated by `main.py`.
-* **Environment**: This project strictly uses `pixi`.
+* `Tests`: `tests/`
+* `Docs/Config`: `conf/config.yaml`
