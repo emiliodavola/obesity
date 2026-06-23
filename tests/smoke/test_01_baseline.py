@@ -21,11 +21,11 @@ def test_01_baseline_smoke():
         "has_hypertension",
         "has_asthma",
         "has_depression",
-        "has_allergies",
-        "has_careplans",
-        "has_immunizations",
+        "n_allergies",
+        "n_careplans",
+        "n_immunizations",
     ]
-    model_path = "checkpoints/tabpfn.ckpt"
+    model_path = "checkpoints/tabpfn-v2-classifier.ckpt"
     device = "cpu"
 
     df = pd.read_csv(csv_path)

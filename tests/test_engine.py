@@ -2,7 +2,7 @@
 
 from unittest.mock import patch
 
-from obesity.engine import ensure_model_checkpoint, get_device
+from obesity.utils import ensure_model_checkpoint, get_device
 
 
 def test_get_device():
@@ -24,12 +24,11 @@ def test_ensure_model_checkpoint_exists(mock_exists):
 
 @patch("os.path.exists")
 @patch("os.makedirs")
-@patch("obesity.engine.hf_hub_download")
+@patch("obesity.utils.hf_hub_download")
 @patch("shutil.copy")
 def test_ensure_model_checkpoint_downloads(
     mock_copy, mock_download, mock_makedirs, mock_exists
 ):
-    """Test that a missing model is downloaded from Hugging Face."""
     mock_exists.return_value = False
     mock_download.return_value = "cached/path"
 
@@ -37,5 +36,8 @@ def test_ensure_model_checkpoint_downloads(
     result = ensure_model_checkpoint(path, "repo", "file")
 
     assert result == path
-    mock_download.assert_called_once_with(repo_id="repo", filename="file")
+    mock_download.assert_called_once_with(
+        repo_id="repo",
+        filename="file",
+    )
     mock_copy.assert_called_once_with("cached/path", path)
