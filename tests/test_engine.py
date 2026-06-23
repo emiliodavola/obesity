@@ -1,24 +1,30 @@
+"""Unit tests for the core engine."""
+
 from unittest.mock import patch
-from src.engine import get_device, ensure_model_checkpoint
+
+from obesity.utils import ensure_model_checkpoint, get_device
 
 
 def test_get_device():
-    # Should return "cuda" if available, else "cpu"
+    """Verify the device selection logic."""
     device = get_device()
     assert device in ["cuda", "cpu"]
 
 
 @patch("os.path.exists")
 def test_ensure_model_checkpoint_exists(mock_exists):
+    """Test that an existing model is returned without downloading."""
     mock_exists.return_value = True
+
     path = "some/local/path"
     result = ensure_model_checkpoint(path, "repo", "file")
+
     assert result == path
 
 
 @patch("os.path.exists")
 @patch("os.makedirs")
-@patch("src.engine.hf_hub_download")
+@patch("obesity.utils.hf_hub_download")
 @patch("shutil.copy")
 def test_ensure_model_checkpoint_downloads(
     mock_copy, mock_download, mock_makedirs, mock_exists
@@ -30,5 +36,8 @@ def test_ensure_model_checkpoint_downloads(
     result = ensure_model_checkpoint(path, "repo", "file")
 
     assert result == path
-    mock_download.assert_called_once_with(repo_id="repo", filename="file")
+    mock_download.assert_called_once_with(
+        repo_id="repo",
+        filename="file",
+    )
     mock_copy.assert_called_once_with("cached/path", path)

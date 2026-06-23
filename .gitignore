@@ -1,17 +1,29 @@
-# Python-generated files
+# Gitignore for Obesity Classification Pipeline
+
+# Data and Models (Heavy/Mutable - NOT Versioned)
+checkpoints/
+outputs/
+*.ckpt
+*.log
+*.h5
+*.pt
+*.pth
+*.db
+*.val
+
+# Ephemeral/Development (Noise - NOT Versioned)
+scratch/
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.pixi/
+.venv/
+temp_check.py
 
-# Virtual environments
-.venv
-
-# Custom
-checkpoints/*.ckpt
-logs/
-outputs/*
-!outputs/.gitkeep
-mypy_cache/
+# Local Pi runtime state
+.atl/
+.agents/
+skills-lock.json
+.git/
+.pi/
