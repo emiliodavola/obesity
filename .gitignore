@@ -26,3 +26,4 @@ temp_check.py
 .agents/
 skills-lock.json
 .git/
+.pi/
