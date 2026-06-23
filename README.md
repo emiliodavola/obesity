@@ -1,51 +1,40 @@
 # Obesity Classification Pipeline
 
-An end-to-end machine learning pipeline for obesity classification leveraging the TabPFN (Tabular Prior-Data Fitted Network) model.
+A high-fidelity machine learning research framework for obesity classification, built on a **Skrub DataOps** architecture. It leverages the **TabPFN** (Tabular Prior-Data Fitted Network) model within a strictly typed, modular pipeline.
 
-## Overview
+## Core Architecture
 
-This project implements a modular pipeline to predict obesity levels based on tabular data. It uses **Hydra** for flexible configuration and **TabPFN**, a powerful transformer-based model specifically designed for tabular data, which provides high performance with minimal tuning.
+This project follows a **Software Design Document (SDD)** workflow to ensure reproducibility and traceability.
 
-## Key Features
-
-- **Modular Configuration**: Powered by Hydra, allowing easy adjustment of hyperparameters, paths, and model settings without touching the code.
-- **Automated Model Management**: Integration with Hugging Face Hub to automatically download required TabPFN checkpoints.
-- **Robust Preprocessing**: Implements a scikit-learn pipeline using `ColumnTransformer` and `OrdinalEncoder` for handling categorical features.
-- **Comprehensive Evaluation**: Tracks performance using ROC AUC and Accuracy metrics.
+* **Skrub DataOps Graph**: The pipeline is constructed as a graph of stateless functions and stateful estimators, ensuring metadata (like feature names) propagates through the entire chain.
+* **TabPFN Integration**: We use a specialized `TabPFNWrapper` to ensure the TabPFN model complies with the `scikit-learn` and `skrub` API contracts, enabling seamless feature name propagation.
+* **Hydra Orchestration**: All experiment parameters, data paths, and model settings are managed via `conf/config.yaml`.
 
 ## Project Structure
 
-- `main.py`: The entry point; orchestrates the experiment via Hydra.
-- `obesity/`: Core logic modules:
+* `main.py`: The orchestration entry point (Hydra-driven).
+* `obesity/`: The core logic (Skrub DataOps modules):
   - `data.py`: Data loading and splitting.
-  - `features.py`: Preprocessing and transformations.
-  - `pipeline.py`: The classifier assembly (Skrub DataOps).
-  - `evaluate.py`: Scoring and metrics.
-  - `utils.py`: Low-level utilities (device, model management).
+  - `features.py`: Feature engineering and transformations.
+  - `pipeline.py`: The classifier assembly (Skrub DataOps graph).
+  - `evaluate.py`: Scoring and metric evaluation.
+  - `utils.py`: Low-level utilities (device management, model retrieval).
+* `conf/`: Configuration management (Hydra).
+* `data/`: Raw dataset files.
+* `tests/`: Structural and smoke tests (`tests/smoke/`).
+* `audit/`: Experiment audit digests (Markdown-based summaries).
+* `experiments/`: Individual experiment scripts (`# %%` jupytext format).
+* `journal/`: The project's chronological record (`JOURNAL.md`).
+* `openspec/`: The SDD artifacts (Proposals, Specs, Designs, Tasks, and Reports).
 
-- `conf/config.yaml`: Configuration file for dataset paths, target columns, and model parameters.
-- `data/`: Directory containing the obesity dataset.
+## Development Workflow (SDD)
 
-## Installation & Usage
+The project operates through a structured design-to-implementation cycle:
+`explore` $\to$ `proposal` $\to$ `spec` $\to$ `design` $\to$ `tasks` $\to$ `apply` $\to$ `verify` $\to$ `sync` $\to$ `archive`
 
-### Prerequisites
+## Standards & Compliance
 
-Ensure you have [pixi](https://pixi.sh) installed.
-
-### Setup
-
-```bash
-pixi install
-```
-
-### Running the Pipeline
-
-```bash
-pixi run python main.py
-```
-
-To override configuration parameters via CLI:
-
-```bash
-pixi run python main.py params.test_size=0.2 data.path=data/my_dataset.csv
-```
+* **Language**: Python 3.12 (Strictly typed via `mypy`).
+* **Code Quality**: Linting and formatting via `ruff`. Security via `bandit`.
+* **Environment**: Strictly managed via `pixi` (Conda-forge based).
+* **Reproducibility**: Every experiment is accompanied by a `journal` entry and a `verify-report`.
