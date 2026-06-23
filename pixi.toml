@@ -1,0 +1,49 @@
+[workspace]
+authors = ["Emilio Dávola <elazeta@gmail.com>"]
+channels = ["https://prefix.dev/conda-forge"]
+name = "obesity"
+platforms = ["win-64"]
+version = "0.1.0"
+
+[system-requirements]
+cuda = "12.0"
+
+[tasks]
+
+[dependencies]
+python = "3.12.*"
+huggingface_hub = ">=1.20.0,<2"
+hydra-core = ">=1.3.2,<2"
+pandas = ">=3.0.3,<4"
+scikit-learn = ">=1.9.0,<2"
+pytorch-gpu = "*"
+tabpfn = ">=8.0.8,<9"
+fsspec = ">=2026.6.0,<2027"
+
+[feature.dev.dependencies]
+bandit = "*"
+deptry = "*"
+mypy = "*"
+pandas-stubs = "*"
+pip-audit = "*"
+pre-commit = "*"
+pytest = "*"
+ruff = "*"
+
+[feature.dev.activation.env]
+PYTHONPATH = "."
+
+[feature.agent.dependencies]
+ipython = "*"
+pyright = "*"
+skrub = "*"
+
+[feature.agent.activation.env]
+PYTHONPATH = "."
+
+[feature.agent.pypi-dependencies]
+skore = ">=0.21"
+
+[environments]
+dev = { features = ["dev"], solve-group = "default" }
+agent = { features = ["dev", "agent"], solve-group = "default" }

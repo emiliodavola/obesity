@@ -1,0 +1,19 @@
+# SDD Configuration
+
+execution_mode: "interactive"
+artifact_store: "engram"
+chained_pr_strategy: "ask-always"
+review_budget: 400
+
+[testing]
+command = "pixi run pytest"
+framework = "pytest"
+layers = { unit = ["pytest"], integration = [], e2e = [] }
+
+[rules]
+proposal = { require_problem_statement = true }
+spec = { require_acceptance_criteria = true }
+design = { require_tradeoffs = true }
+tasks = { protect_review_workload = true }
+apply = { test_command = "pixi run pytest" }
+verify = { test_command = "pixi run pytest" }
