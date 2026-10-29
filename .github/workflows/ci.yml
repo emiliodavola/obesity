@@ -23,4 +23,4 @@ jobs:
       - run: uv run ruff format --check .
       - run: PYTHONPATH=. uv run coverage run --source=obesity -m pytest
       - run: uv run coverage report --show-missing
-      - run: PYTHONPATH=. uv run mypy .
+      - run: PYTHONPATH=. uv run mypy main.py obesity/ tests/ data/eda.py && uv run mypy audit/ && uv run mypy experiments/

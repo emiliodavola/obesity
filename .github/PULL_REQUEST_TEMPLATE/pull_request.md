@@ -19,7 +19,9 @@ uv run ruff format --check .
 PYTHONPATH=. uv run pytest
 PYTHONPATH=. uv run coverage run --source=obesity -m pytest
 uv run coverage report --show-missing
-PYTHONPATH=. uv run mypy .
+PYTHONPATH=. uv run mypy main.py obesity/ tests/ data/eda.py
+uv run mypy audit/
+uv run mypy experiments/
 ```
 
 ## Files changed
@@ -47,6 +49,8 @@ Specs updated: `openspec/specs/<domain>/spec.md`
 - [ ] `uv run ruff format --check .` — clean
 - [ ] `PYTHONPATH=. uv run coverage run --source=obesity -m pytest` — all passing
 - [ ] `uv run coverage report --show-missing` — review per-file coverage
-- [ ] `PYTHONPATH=. uv run mypy .` — clean
+- [ ] `PYTHONPATH=. uv run mypy main.py obesity/ tests/ data/eda.py` — clean
+- [ ] `uv run mypy audit/` — clean
+- [ ] `uv run mypy experiments/` — clean
 - [ ] New behaviour covered by tests
 - [ ] Documentation updated when behaviour or configuration changes
