@@ -36,10 +36,13 @@ A high-fidelity machine learning research framework for obesity classification, 
 
 ```bash
 uv sync --all-groups
+uv run pre-commit install
 uv run python -m pytest
 PYTHONPATH=. uv run coverage run --source=obesity -m pytest
 uv run coverage report --show-missing
 uv run python main.py
 ```
+
+Run `uv run pre-commit install` once after cloning to enable the repository hooks for future commits.
 
 The coverage report shows the percentage and uncovered lines for each module in `obesity/`.
