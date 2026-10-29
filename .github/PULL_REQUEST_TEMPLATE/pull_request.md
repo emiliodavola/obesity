@@ -17,6 +17,8 @@
 uv run ruff check .
 uv run ruff format --check .
 PYTHONPATH=. uv run pytest
+PYTHONPATH=. uv run coverage run --source=obesity -m pytest
+uv run coverage report --show-missing
 PYTHONPATH=. uv run mypy .
 ```
 
@@ -43,7 +45,8 @@ Specs updated: `openspec/specs/<domain>/spec.md`
 - [ ] Linked issue is approved (`status:approved`) and referenced as `Closes #N`
 - [ ] `uv run ruff check .` — clean
 - [ ] `uv run ruff format --check .` — clean
-- [ ] `PYTHONPATH=. uv run pytest` — all passing
+- [ ] `PYTHONPATH=. uv run coverage run --source=obesity -m pytest` — all passing
+- [ ] `uv run coverage report --show-missing` — review per-file coverage
 - [ ] `PYTHONPATH=. uv run mypy .` — clean
 - [ ] New behaviour covered by tests
 - [ ] Documentation updated when behaviour or configuration changes

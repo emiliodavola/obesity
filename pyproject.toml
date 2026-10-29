@@ -25,6 +25,7 @@ agent = [
 
 dev = [
     "bandit>=1.9.4",
+    "coverage>=7.17.0",
     "deptry>=0.25.1",
     "mypy>=2.4.1",
     "pandas-stubs>=3.1.0.261029",

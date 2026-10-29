@@ -4,8 +4,6 @@ A high-fidelity machine learning research framework for obesity classification, 
 
 ## Core Architecture
 
-This project follows a **Software Design Document (SDD)** workflow to ensure reproducibility and traceability.
-
 * **Skrub DataOps Graph**: The pipeline is constructed as a graph of stateless functions and stateful estimators, ensuring metadata (like feature names) propagates through the entire chain.
 * **TabPFN Integration**: We use a specialized `TabPFNWrapper` to ensure the TabPFN model complies with the `scikit-learn` and `skrub` API contracts, enabling seamless feature name propagation.
 * **Hydra Orchestration**: All experiment parameters, data paths, and model settings are managed via `conf/config.yaml`.
@@ -25,12 +23,7 @@ This project follows a **Software Design Document (SDD)** workflow to ensure rep
 * `audit/`: Experiment audit digests (Markdown-based summaries).
 * `experiments/`: Individual experiment scripts (`# %%` jupytext format).
 * `journal/`: The project's chronological record (`JOURNAL.md`).
-* `openspec/`: The SDD artifacts (Proposals, Specs, Designs, Tasks, and Reports).
-
-## Development Workflow (SDD)
-
-The project operates through a structured design-to-implementation cycle:
-`explore` $\to$ `proposal` $\to$ `spec` $\to$ `design` $\to$ `tasks` $\to$ `apply` $\to$ `verify` $\to$ `sync` $\to$ `archive`
+* `openspec/`: Project change records and verification reports.
 
 ## Standards & Compliance
 
@@ -44,5 +37,9 @@ The project operates through a structured design-to-implementation cycle:
 ```bash
 uv sync --all-groups
 uv run python -m pytest
+PYTHONPATH=. uv run coverage run --source=obesity -m pytest
+uv run coverage report --show-missing
 uv run python main.py
 ```
+
+The coverage report shows the percentage and uncovered lines for each module in `obesity/`.
