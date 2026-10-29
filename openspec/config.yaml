@@ -6,7 +6,7 @@ chained_pr_strategy: "ask-always"
 review_budget: 400
 
 [testing]
-command = "pixi run pytest"
+command = "uv run pytest"
 framework = "pytest"
 layers = { unit = ["pytest"], integration = [], e2e = [] }
 
@@ -15,5 +15,5 @@ proposal = { require_problem_statement = true }
 spec = { require_acceptance_criteria = true }
 design = { require_tradeoffs = true }
 tasks = { protect_review_workload = true }
-apply = { test_command = "pixi run pytest" }
-verify = { test_command = "pixi run pytest" }
+apply = { test_command = "uv run pytest" }
+verify = { test_command = "uv run pytest" }

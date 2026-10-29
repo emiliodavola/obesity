@@ -36,5 +36,13 @@ The project operates through a structured design-to-implementation cycle:
 
 * **Language**: Python 3.12 (Strictly typed via `mypy`).
 * **Code Quality**: Linting and formatting via `ruff`. Security via `bandit`.
-* **Environment**: Strictly managed via `pixi` (Conda-forge based).
+* **Environment**: Managed with `uv` and locked in `uv.lock`.
 * **Reproducibility**: Every experiment is accompanied by a `journal` entry and a `verify-report`.
+
+## Environment
+
+```bash
+uv sync --all-groups
+uv run python -m pytest
+uv run python main.py
+```

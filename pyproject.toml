@@ -2,8 +2,38 @@
 name = "obesity"
 version = "0.1.0"
 description = "Obesity Classification Pipeline"
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.12,<3.13"
+dependencies = [
+	"fsspec>=2026.6.0,<2027",
+	"huggingface-hub>=1.20.0,<2",
+	"hydra-core>=1.3.2,<2",
+	"pandas>=3.0.3,<4",
+	"scikit-learn>=1.9.0,<2",
+	"tabpfn>=8.0.8,<9",
+	"torch",
+]
 
-[tool.setuptools]
-packages = [{include = "obesity"}]
+[dependency-groups]
+dev = [
+	"bandit",
+	"deptry",
+	"mypy",
+	"pandas-stubs",
+	"pip-audit",
+	"pre-commit",
+	"pytest",
+	"ruff",
+]
+agent = [
+	"ipython",
+	"pyright",
+	"skore[jupyter]>=0.21",
+	"skrub",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["obesity*"]

@@ -5,7 +5,7 @@
 ## OVERVIEW
 
 Project: **Obesity Classification Pipeline**
-Stack: **Python 3.12**, **pixi** (Environment/Package Manager), **Hydra** (Config Management), **TabPFN** (Model), **Scikit-learn** (Pipeline/Metrics), **Pandas** (Data Manipulation), **PyTorch** (Backend), **HuggingFace Hub** (Model Retrieval)
+Stack: **Python 3.12**, **uv** (Environment/Package Manager), **Hydra** (Config Management), **TabPFN** (Model), **Scikit-learn** (Pipeline/Metrics), **Pandas** (Data Manipulation), **PyTorch** (Backend), **HuggingFace Hub** (Model Retrieval)
 
 ## STRUCTURE
 
@@ -29,10 +29,10 @@ Stack: **Python 3.12**, **pixi** (Environment/Package Manager), **Hydra** (Confi
 
 | Action | Command |
 |--------|---------|
-| Install| `pixi install` |
-| Test   | `pixi run python -m pytest` |
-| Run    | `pixi run python main.py` |
-| Build  | `pixi install` (Environment setup) |
+| Install| `uv sync --all-groups` |
+| Test   | `uv run python -m pytest` |
+| Run    | `uv run python main.py` |
+| Build  | `uv sync --all-groups` (Environment setup) |
 
 ## CODING STANDARDS
 
@@ -45,7 +45,7 @@ Stack: **Python 3.12**, **pixi** (Environment/Package Manager), **Hydra** (Confi
 To ensure reproducibility and minimize repository bloat, the following rules apply:
 
 * **Versioned (The Truths):**
-    - `obesity/`, `main.py`, `tests/`, `conf/`, `journal/`, `openspec/`, `experiments/`, `pixi.toml`, and `pixi.lock`.
+    - `obesity/`, `main.py`, `tests/`, `conf/`, `journal/`, `openspec/`, `experiments/`, `pyproject.toml`, and `uv.lock`.
     - `data/obesity_dataset.csv`
 * **Not Versioned (The Noise):**
     - `checkpoints/`, `outputs/`, `scratch/`, `*.ckpt`, `*.log`, `*.h5`, `*.pt`, `*.pth`, `*.db`, `*.val`
