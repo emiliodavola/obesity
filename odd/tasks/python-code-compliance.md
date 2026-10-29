@@ -18,7 +18,7 @@ Check: baseline/final type diagnostics and repository type checker.
 Keep the pending coverage/CI/docs changes and current feature branch intact. Do not commit unrelated pending changes.
 
 ## Tasks
-- T1 | S1-S3 | inline | completed | Evidence: Ruff clean, 12 tests passed, 100% per-module coverage, Pyright 0 errors, core mypy clean. Risk: none after checks.
+- T1 | S1-S3 | inline | completed | Commit: `5d54a60`; Ruff clean, 12 tests passed, 100% per-module coverage, Pyright 0 errors, core mypy clean. Risk: none after checks.
 
 ## Log
 - L1: User request: "bueno hacelo cumplir"
