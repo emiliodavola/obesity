@@ -1,9 +1,8 @@
-"""
-Utility functions for the obesity classification pipeline.
-"""
+"""Device selection and checkpoint retrieval for obesity classification."""
 
 import os
 import shutil
+
 import torch
 from huggingface_hub import hf_hub_download
 
@@ -16,7 +15,7 @@ def get_device() -> str:
     str
         The device identifier.
     """
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device: str = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
     return device
 
@@ -44,7 +43,7 @@ def ensure_model_checkpoint(local_path: str, hf_repo: str, hf_filename: str) -> 
     print(f"Model not found at {local_path}. Downloading latest version from HF...")
     try:
         os.makedirs(os.path.dirname(local_path), exist_ok=True)
-        cached_path = hf_hub_download(repo_id=hf_repo, filename=hf_filename)
+        cached_path: str = hf_hub_download(repo_id=hf_repo, filename=hf_filename)
         shutil.copy(cached_path, local_path)
         print(f"Model successfully downloaded to {local_path}")
     except Exception as e:

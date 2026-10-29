@@ -1,29 +1,66 @@
-# Gitignore for Obesity Classification Pipeline
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+cache/
+*.whl
+*.egg
+.pytest_cache/
 
-# Data and Models (Heavy/Mutable - NOT Versioned)
-checkpoints/
-outputs/
-*.ckpt
+# ── Virtual environment ─────────────────────────────────────────────────
+.venv/
+.venv_*/
+venv/
+venv_*/
+
+# ── Environment / secrets ──────────────────────────────────────────────
+.env
+.env.local
+*.env
+
+# ── IDE / editor ───────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ── Hugging Face cache ────────────────────────────────────────────────
+~/.cache/huggingface/
+**/.cache/huggingface/
+
+# ── OS files ───────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Temporary files ────────────────────────────────────────────────────
+*.tmp
+*.temp
 *.log
+dataset/
+tmp/
+outputs/
+
+# ── Agent files ────────────────────────────────────────────────────
+.atl/
+.pi/
+.agents/
+skills-lock.json
+.pi-lens.json
+
+# coverage.py
+.coverage
+.coverage.*
+htmlcov/
+
+# Checkpoint files
+checkpoints/
+*.ckpt
 *.h5
 *.pt
 *.pth
-*.db
-*.val
-
-# Ephemeral/Development (Noise - NOT Versioned)
-scratch/
-__pycache__/
-.pytest_cache
-.ruff_cache
-.mypy_cache
-.pixi/
-.venv/
-temp_check.py
-
-# Local Pi runtime state
-.atl/
-.agents/
-skills-lock.json
-.git/
-.pi/

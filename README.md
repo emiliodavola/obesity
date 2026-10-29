@@ -4,8 +4,6 @@ A high-fidelity machine learning research framework for obesity classification, 
 
 ## Core Architecture
 
-This project follows a **Software Design Document (SDD)** workflow to ensure reproducibility and traceability.
-
 * **Skrub DataOps Graph**: The pipeline is constructed as a graph of stateless functions and stateful estimators, ensuring metadata (like feature names) propagates through the entire chain.
 * **TabPFN Integration**: We use a specialized `TabPFNWrapper` to ensure the TabPFN model complies with the `scikit-learn` and `skrub` API contracts, enabling seamless feature name propagation.
 * **Hydra Orchestration**: All experiment parameters, data paths, and model settings are managed via `conf/config.yaml`.
@@ -25,16 +23,26 @@ This project follows a **Software Design Document (SDD)** workflow to ensure rep
 * `audit/`: Experiment audit digests (Markdown-based summaries).
 * `experiments/`: Individual experiment scripts (`# %%` jupytext format).
 * `journal/`: The project's chronological record (`JOURNAL.md`).
-* `openspec/`: The SDD artifacts (Proposals, Specs, Designs, Tasks, and Reports).
-
-## Development Workflow (SDD)
-
-The project operates through a structured design-to-implementation cycle:
-`explore` $\to$ `proposal` $\to$ `spec` $\to$ `design` $\to$ `tasks` $\to$ `apply` $\to$ `verify` $\to$ `sync` $\to$ `archive`
+* `openspec/`: Project change records and verification reports.
 
 ## Standards & Compliance
 
 * **Language**: Python 3.12 (Strictly typed via `mypy`).
 * **Code Quality**: Linting and formatting via `ruff`. Security via `bandit`.
-* **Environment**: Strictly managed via `pixi` (Conda-forge based).
+* **Environment**: Managed with `uv` and locked in `uv.lock`.
 * **Reproducibility**: Every experiment is accompanied by a `journal` entry and a `verify-report`.
+
+## Environment
+
+```bash
+uv sync --all-groups
+uv run pre-commit install
+uv run python -m pytest
+PYTHONPATH=. uv run coverage run --source=obesity -m pytest
+uv run coverage report --show-missing
+uv run python main.py
+```
+
+Run `uv run pre-commit install` once after cloning to enable the repository hooks for future commits.
+
+The coverage report shows the percentage and uncovered lines for each module in `obesity/`.
