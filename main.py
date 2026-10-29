@@ -4,17 +4,19 @@ import logging
 from typing import Any, cast
 
 import hydra
-from omegaconf import DictConfig, OmegaConf
 import pandas as pd
+from omegaconf import DictConfig, OmegaConf
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 
-from obesity.data import load_data, split_data
+from obesity.data import split_data
+from obesity.evaluate import evaluate_model
 from obesity.features import get_preprocessor
 from obesity.pipeline import create_pipeline
-from obesity.evaluate import evaluate_model
-from obesity.utils import get_device, ensure_model_checkpoint
+from obesity.utils import ensure_model_checkpoint, get_device
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-logger = logging.getLogger("ObesityHydraPipeline")
+logger: logging.Logger = logging.getLogger("ObesityHydraPipeline")
 
 
 def run_experiment(
@@ -53,21 +55,29 @@ def run_experiment(
     tuple[float, float]
         A tuple containing (ROC AUC, Accuracy).
     """
-    device = get_device()
-    model_path = ensure_model_checkpoint(model_ckpt, hf_repo, hf_filename)
+    device: str = get_device()
+    model_path: str = ensure_model_checkpoint(model_ckpt, hf_repo, hf_filename)
 
     print(f"Loading raw data from {csv_path}...")
-    df = pd.read_csv(csv_path)
-    X_train, X_test, y_train, y_test = split_data(df, target_col, test_size=test_size, random_state=random_state)
+    df: pd.DataFrame = pd.read_csv(csv_path)
+    split: list[Any] = split_data(
+        df, target_col, test_size=test_size, random_state=random_state
+    )
+    X_train: pd.DataFrame = split[0]
+    X_test: pd.DataFrame = split[1]
+    y_train: pd.Series = split[2]
+    y_test: pd.Series = split[3]
 
-    preprocessor = get_preprocessor(cat_cols)
-    clf_pipeline = create_pipeline(preprocessor, model_path, device)
+    preprocessor: ColumnTransformer = get_preprocessor(cat_cols)
+    clf_pipeline: Pipeline = create_pipeline(preprocessor, model_path, device)
 
     print("Fitting pipeline...")
     clf_pipeline.fit(X_train, y_train)
 
     print("Evaluating pipeline...")
-    roc_auc, acc = evaluate_model(clf_pipeline, X_test, y_test)
+    metrics: tuple[float, float] = evaluate_model(clf_pipeline, X_test, y_test)
+    roc_auc: float = metrics[0]
+    acc: float = metrics[1]
 
     print(f"ROC AUC: {roc_auc:.6f}")
     print(f"Accuracy: {acc:.6f}")
@@ -75,7 +85,7 @@ def run_experiment(
 
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
-def main(cfg: DictConfig):
+def main(cfg: DictConfig) -> None:
     """Execute the obesity classification pipeline from configuration.
 
     Parameters
@@ -83,15 +93,13 @@ def main(cfg: DictConfig):
     cfg : DictConfig
         Hydra configuration object containing data and model parameters.
 
-    Returns
-    -------
-    tuple[float, float]
-        The ROC AUC and Accuracy of the experiment.
     """
     try:
-        config_dict = cast(dict[str, Any], OmegaConf.to_container(cfg, resolve=True))
+        config_dict: dict[str, Any] = cast(
+            dict[str, Any], OmegaConf.to_container(cfg, resolve=True)
+        )
 
-        roc, acc = run_experiment(
+        metrics: tuple[float, float] = run_experiment(
             csv_path=config_dict["data"]["path"],
             target_col=config_dict["data"]["target_col"],
             cat_cols=config_dict["data"]["cat_cols"],
@@ -101,6 +109,8 @@ def main(cfg: DictConfig):
             test_size=config_dict["params"]["test_size"],
             random_state=config_dict["params"]["random_state"],
         )
+        roc: float = metrics[0]
+        acc: float = metrics[1]
 
         logger.info(f"ROC AUC: {roc:.4f}, Accuracy: {acc:.4f}")
     except Exception as e:

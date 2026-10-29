@@ -1,11 +1,15 @@
+"""Read-only audit of the stored baseline classification report."""
+
 # %% [markdown]
 # # Audit — 01_baseline: baseline classification with TabPFN
 #
 # Read-only review of the stored report below: its checks and metrics.
 
 # %%
-import skore
 import os
+from typing import Any
+
+import skore
 
 # %% [markdown]
 # ## Open the project
@@ -15,8 +19,10 @@ import os
 # there rather than retyping it.
 
 # %%
-PROJECT_ROOT = os.path.abspath(os.path.join(os.getcwd(), 'experiments'))
-project = skore.Project(name="obesity", workspace=os.path.abspath(os.path.join(os.getcwd(), 'experiments')), mode="local")
+PROJECT_ROOT: str = os.path.abspath(os.path.join(os.getcwd(), "experiments"))
+project: skore.Project = skore.Project(
+    name="obesity", workspace=PROJECT_ROOT, mode="local"
+)
 project
 
 # %% [markdown]
@@ -27,7 +33,7 @@ project
 # spot duplicate keys from accidental re-runs.
 
 # %%
-summary = project.summarize()
+summary: Any = project.summarize()
 summary
 
 # %% [markdown]
@@ -50,9 +56,9 @@ summary
 # that value.
 
 # %%
-REPORT_ID = "195398642518948936502400246745309599323"
+REPORT_ID: str = "195398642518948936502400246745309599323"
 
-report = project.get(REPORT_ID)
+report: Any = project.get(REPORT_ID)
 report
 
 # %% [markdown]

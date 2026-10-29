@@ -1,18 +1,24 @@
+"""Smoke-test row preservation in the baseline obesity classifier."""
+
+from typing import Any
+
 import numpy as np
 import pandas as pd
 import pytest
+from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
-from obesity.data import load_data, split_data
+from sklearn.pipeline import Pipeline
+
 from obesity.features import get_preprocessor
 from obesity.pipeline import create_pipeline
 
 
-def test_01_baseline_smoke():
-    """Smoke test for 01_baseline: row count verification."""
+def test_01_baseline_smoke() -> None:
+    """Verify predictions preserve the number of requested rows."""
     # Setup data
-    csv_path = "data/obesity_dataset.csv"
-    target_col = "obese"
-    cat_cols = [
+    csv_path: str = "data/obesity_dataset.csv"
+    target_col: str = "obese"
+    cat_cols: list[str] = [
         "RACE",
         "ETHNICITY",
         "has_sinusitis",
@@ -25,25 +31,33 @@ def test_01_baseline_smoke():
         "n_careplans",
         "n_immunizations",
     ]
-    model_path = "checkpoints/tabpfn-v2-classifier.ckpt"
-    device = "cpu"
+    model_path: str = "checkpoints/tabpfn-v2-classifier.ckpt"
+    device: str = "cpu"
 
-    df = pd.read_csv(csv_path)
-    X_train, X_test, y_train, y_test = train_test_split(
-        df.drop(target_col, axis=1), df[target_col], test_size=0.3, random_state=42
+    df: pd.DataFrame = pd.read_csv(csv_path)
+    split: list[Any] = train_test_split(
+        df.drop(target_col, axis=1),
+        df[target_col],
+        test_size=0.3,
+        random_state=42,
     )
+    X_train: pd.DataFrame = split[0]
+    X_test: pd.DataFrame = split[1]
+    y_train: pd.Series = split[2]
+    _y_test: pd.Series = split[3]
 
-    preprocessor = get_preprocessor(cat_cols)
-    clf_pipeline = create_pipeline(preprocessor, model_path, device)
+    preprocessor: ColumnTransformer = get_preprocessor(cat_cols)
+    clf_pipeline: Pipeline = create_pipeline(preprocessor, model_path, device)
 
     clf_pipeline.fit(X_train, y_train)
 
     # Predict on a disjoint subset of X_test
-    predict_grid = X_test.iloc[:10, :]
-    preds = clf_pipeline.predict(predict_grid)
+    predict_grid: pd.DataFrame = X_test.iloc[:10, :]
+    preds: np.ndarray = clf_pipeline.predict(predict_grid)
 
     # Hard assertion: Row count match
     assert len(preds) == len(predict_grid)
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

@@ -1,33 +1,31 @@
+"""Explore obesity dataset balance, feature distributions, and correlations."""
+
 # %%
 import os
 
+import pandas as pd
 import skore
 
-from obesity.data import load_data, split_data
-from obesity.utils import ensure_model_checkpoint, get_device
-from obesity.evaluate import evaluate_model
-from obesity.features import get_preprocessor
-from obesity.pipeline import create_pipeline
+from obesity.data import load_data
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-project = skore.Project(name="obesity", workspace=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')), mode="local")
+PROJECT_ROOT: str = os.path.abspath(os.path.dirname(__file__))
+project: skore.Project = skore.Project(
+    name="obesity",
+    workspace=os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")),
+    mode="local",
+)
 
 # %%
 # EDA Configuration
-CSV_PATH = "data/obesity_dataset.csv"
-TARGET_COL = "obese"
+CSV_PATH: str = "data/obesity_dataset.csv"
+TARGET_COL: str = "obese"
 
 # %%
-df = load_data(CSV_PATH)
+df: pd.DataFrame = load_data(CSV_PATH)
 df
 # %%
 import skrub
-import pandas as pd
 
 # %%
-report = skrub.TableReport(df)
+report: skrub.TableReport = skrub.TableReport(df)
 report
-# %%
-df[TARGET_COL].value_counts(normalize=True)
-# %%
-df.corr(numeric_only=True).unstack().sort_values(ascending=False).head(20)
