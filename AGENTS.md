@@ -40,6 +40,12 @@ Stack: **Python 3.12**, **uv** (Environment/Package Manager), **Hydra** (Config 
 * **Style**: Modular architecture, explicit logging, docstrings, and type casting for Hydra/OmegaConf.
 * **Rules**: Linting and formatting via `ruff`. Security via `bandit`. Dependency audit via `pip-audit`.
 
+## BRANCHING AND INTEGRATION
+
+* Work on a dedicated feature branch; do not commit or push directly to `main`.
+* Open pull requests targeting `main`. The `dev` branch is retired and must not be used.
+* Keep CI running on both pull requests to `main` and pushes to `main`; the push trigger validates the merged state, including pull request merges.
+
 ## VERSIONING POLICY
 
 To ensure reproducibility and minimize repository bloat, the following rules apply:
