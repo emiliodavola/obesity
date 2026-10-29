@@ -44,6 +44,7 @@ desktop.ini
 *.log
 dataset/
 tmp/
+outputs/
 
 # ── Agent files ────────────────────────────────────────────────────
 .atl/
