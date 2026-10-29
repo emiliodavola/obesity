@@ -39,12 +39,35 @@ from obesity.utils import ensure_model_checkpoint, get_device
 CSV_PATH = "data/obesity_dataset.csv"
 TARGET_COL = "obese"
 REDUNDANT_FEATURES = ["n_careplans", "n_procedures", "n_medications", "total_med_cost"]
-NOISE_FEATURES = ["ETHNICITY", "HEALTHCARE_COVERAGE", "HEALTHCARE_EXPENSES", "LAT", "LON", "RACE", 
-                 "has_anemia", "has_asthma", "has_depression", "has_diabetes", "has_hypertension", 
-                 "has_sinusitis", "is_dead", "is_female", "n_allergies", "n_ambulatory", 
-                 "n_conditions", "n_emergency", "n_encounters", "n_immunizations", "n_inpatient", 
-                 "n_outpatient", "n_unique_conditions", "n_unique_procedures", "n_wellness", 
-                 "total_claim_cost", "total_payer_coverage"]
+NOISE_FEATURES = [
+    "ETHNICITY",
+    "HEALTHCARE_COVERAGE",
+    "HEALTHCARE_EXPENSES",
+    "LAT",
+    "LON",
+    "RACE",
+    "has_anemia",
+    "has_asthma",
+    "has_depression",
+    "has_diabetes",
+    "has_hypertension",
+    "has_sinusitis",
+    "is_dead",
+    "is_female",
+    "n_allergies",
+    "n_ambulatory",
+    "n_conditions",
+    "n_emergency",
+    "n_encounters",
+    "n_immunizations",
+    "n_inpatient",
+    "n_outpatient",
+    "n_unique_conditions",
+    "n_unique_procedures",
+    "n_wellness",
+    "total_claim_cost",
+    "total_payer_coverage",
+]
 FEATURES_TO_DROP = REDUNDANT_FEATURES + NOISE_FEATURES
 
 # Execution
